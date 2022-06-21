@@ -111,33 +111,15 @@ Image.prototype.renderResults = function() {
   parentElement.appendChild(article);
 
   const h2 = document.createElement('h2');
-  h2.textContent = this.id;
+  h2.textContent = this.id + " had " + this.clicks + " clicks and was viewed " + this.views + " times";
   article.appendChild(h2);
 };
 
-Image.renderResults();
+let buttonEl = document.getElementById('results-button');
 
-/// tried to put data in table - gave up for now ///
-// Image.prototype.renderResults = function() {
-//   let tableEl = document.getElementById('results-table');
-//   let rowEl = document.createElement('tr');
-//   let nameCell = document.createElement('td');
-//   nameCell.textContent = this.fileName;
-//   rowEl.appendChild(nameCell);
-
-//   for (let i = 0; i <fileNames.length; i++) {
-//     let cellEl = document.createElement('td');
-//     cellEl.textContent = this.fileName[i];
-//     rowEl.appendChild(cellEl);
-//   }
-
-//   // clickCell.textContent = this.clicks;
-//   // viewsCell.textContent = this.views;
-  
-  
-// };
-
-// Image[0].renderResults();
-
-// console.log(Image.prototype.renderResults);
-
+buttonEl.addEventListener('click', function() {
+  console.log(images);
+  for (let i = 0; i < images.length; i++) {
+    images[i].renderResults();
+  }
+});
