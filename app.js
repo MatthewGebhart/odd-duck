@@ -1,10 +1,8 @@
 'use strict';
 
 let imageEls = document.querySelectorAll('img');
-console.log(imageEls);
+// console.log(imageEls);
 
-let clicks = 0;
-let views = 0;
 let roundTracker = 0;
 
 let fileNames = [
@@ -45,6 +43,7 @@ for (let i = 0; i < fileNames.length; i++) {
   images.push(new Image(fileNames[i]));
 }
 
+
 imageEls[0].id = images[0].id;
 imageEls[0].src = images[0].src;
 images[0].views++;
@@ -57,7 +56,6 @@ images[2].views++;
 
 function handleClick(event) {
   for (let i = 0; i <images.length; i++) {
-    // console.log(event.target.id, images[i].id);
     if (event.target.id === images[i].id) {
       images[i].clicks++;
     }
@@ -68,7 +66,7 @@ function handleClick(event) {
     return;
   }
   renderImages();
-  console.log(images);
+  // console.log(images);
   roundTracker++;
   console.log(roundTracker);
 }
@@ -105,6 +103,7 @@ function generateRandomImage() {
   return images[index];
 }
 
+
 Image.prototype.renderResults = function() {
   const parentElement = document.getElementById('results-table');
   const article = document.createElement('article');
@@ -113,7 +112,13 @@ Image.prototype.renderResults = function() {
   const h2 = document.createElement('h2');
   h2.textContent = this.id + " had " + this.clicks + " clicks and was viewed " + this.views + " times";
   article.appendChild(h2);
+  // for (let i = 0; i < fileNames.length; i++) {
+    // clicksArray.push(this.clicks);
+    // viewsArray.push(this.views);
+  // }
 };
+
+
 
 let buttonEl = document.getElementById('results-button');
 
@@ -123,3 +128,51 @@ buttonEl.addEventListener('click', function() {
     images[i].renderResults();
   }
 });
+
+//// generate chart data arrays///
+
+
+// Image.prototype.generateDataArrays = function() {
+//   for (let i = 0; i < fileNames.length; i++) {
+//     clicksArray.push(images[i].clicks);
+//   }};
+
+function voteResults(){
+  
+
+
+  // for (let i = 0; i < images.length; i++){
+
+  //   clicksArray.push(images[i].clicks);
+  //   viewsArray.push(images[i].views);
+  // }
+
+////create chart////
+
+let chartEl = document.getElementById('my-chart');
+let ctx = chartEl.getContext('2d');
+
+let myChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: fileNames,
+    datasets: [{
+      label: '# of clicks',
+      data: clicksArray,
+      backgroundColor: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      borderColor: [
+        'Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      borderWidth: 1
+    },
+    
+    // {
+    //   label: '# of Views',
+    //   data: [2, 3, 4, 12, 4, 14],
+    //   backgroundColor: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    // }
+  ]},
+
+});
+}
+
+voteResults();
