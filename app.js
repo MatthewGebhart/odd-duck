@@ -25,9 +25,9 @@ let fileNames = [
   'unicorn.jpg',
   'water-can.jpg',
   'wine-glass.jpg',
-]
+];
 
-const images = [];
+let images = read() || [];
 
 function Image(fileName) {
   this.id = fileName;
@@ -39,8 +39,10 @@ function Image(fileName) {
 Image.prototype.handleClick = function () {
 };
 
-for (let i = 0; i < fileNames.length; i++) {
-  images.push(new Image(fileNames[i]));
+if (!images.length) {
+  for (let i = 0; i < fileNames.length; i++) {
+    images.push(new Image(fileNames[i]));
+  }
 }
 
 
@@ -63,14 +65,17 @@ function handleClick(event) {
   if (roundTracker === 25) {
     let imageElement = document.getElementById('image-selection');
     imageElement.innerHTML = 'Voting Has Ended, Thank You!';
-    let buttonAddElement = document.getElementById('results-button');
-    buttonAddElement.hidden = false;
+    let button1AddElement = document.getElementById('results-button');
+    button1AddElement.hidden = false;
+    let button2AddElement = document.getElementById('nuke-button');
+    button2AddElement.hidden = false;
     return;
   }
   renderImages();
   // console.log(images);
   roundTracker++;
   console.log(roundTracker);
+  save();
 }
 
 imageEls.forEach(function (img) {
@@ -88,7 +93,7 @@ function renderImages() {
   while (image2.id === image3.id) {
     image2 = generateRandomImage();
   }
-
+  
   imageEls[0].id = image1.id;
   imageEls[0].src = image1.src;
   image1.views++;
@@ -119,6 +124,21 @@ function generateRandomImage() {
   }
 }
 
+////save data to local storage///
+
+function save() {
+  let data = JSON.stringify(images);
+  localStorage.setItem('state', data);
+
+}
+
+///retrieves application state from local storage///
+function read() {
+  let ValueFromLocalStorage = localStorage.getItem('state');
+  return JSON.parse(ValueFromLocalStorage);
+}
+
+
 
 Image.prototype.renderResults = function () {
   const parentElement = document.getElementById('results-table');
@@ -136,6 +156,12 @@ let buttonEl = document.getElementById('results-button');
 
 buttonEl.addEventListener('click', function () {
   voteResults();
+});
+
+let buttonEl2 = document.getElementById('nuke-button');
+
+buttonEl2.addEventListener('click',function() {
+  localStorage.clear();
 });
 
 
