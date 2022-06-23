@@ -1,7 +1,7 @@
 'use strict';
 
 let imageEls = document.querySelectorAll('img');
-// console.log(imageEls);
+let currentDisplay = [];
 
 let roundTracker = 0;
 
@@ -36,7 +36,7 @@ function Image(fileName) {
   this.src = `./img/${fileName}`;
 }
 
-Image.prototype.handleClick = function() {
+Image.prototype.handleClick = function () {
 };
 
 for (let i = 0; i < fileNames.length; i++) {
@@ -55,7 +55,7 @@ imageEls[2].src = images[2].src;
 images[2].views++;
 
 function handleClick(event) {
-  for (let i = 0; i <images.length; i++) {
+  for (let i = 0; i < images.length; i++) {
     if (event.target.id === images[i].id) {
       images[i].clicks++;
     }
@@ -63,6 +63,8 @@ function handleClick(event) {
   if (roundTracker === 25) {
     let imageElement = document.getElementById('image-selection');
     imageElement.innerHTML = 'Voting Has Ended, Thank You!';
+    let buttonAddElement = document.getElementById('results-button');
+    buttonAddElement.hidden = false;
     return;
   }
   renderImages();
@@ -96,15 +98,29 @@ function renderImages() {
   imageEls[2].id = image3.id;
   imageEls[2].src = image3.src;
   image3.views++;
+
+  console.log(imageEls[0].id);
+  console.log(imageEls[1].id);
+  console.log(imageEls[2].id);
+
+  currentDisplay[0] = image1.id;
+  currentDisplay[1] = image2.id;
+  currentDisplay[2] = image3.id;
+
 }
 
 function generateRandomImage() {
   let index = Math.floor(Math.random() * images.length);
-  return images[index];
+
+  if (currentDisplay.includes(images[index].id)) {
+    return generateRandomImage();
+  } else {
+    return images[index];
+  }
 }
 
 
-Image.prototype.renderResults = function() {
+Image.prototype.renderResults = function () {
   const parentElement = document.getElementById('results-table');
   const article = document.createElement('article');
   parentElement.appendChild(article);
@@ -112,67 +128,60 @@ Image.prototype.renderResults = function() {
   const h2 = document.createElement('h2');
   h2.textContent = this.id + " had " + this.clicks + " clicks and was viewed " + this.views + " times";
   article.appendChild(h2);
-  // for (let i = 0; i < fileNames.length; i++) {
-    // clicksArray.push(this.clicks);
-    // viewsArray.push(this.views);
-  // }
 };
 
 
 
 let buttonEl = document.getElementById('results-button');
 
-buttonEl.addEventListener('click', function() {
-  console.log(images);
-  for (let i = 0; i < images.length; i++) {
-    images[i].renderResults();
-  }
+buttonEl.addEventListener('click', function () {
+  voteResults();
 });
+
 
 //// generate chart data arrays///
 
-
-// Image.prototype.generateDataArrays = function() {
-//   for (let i = 0; i < fileNames.length; i++) {
-//     clicksArray.push(images[i].clicks);
-//   }};
-
-function voteResults(){
-  
+let clicksArray = [];
+let viewsArray = [];
 
 
-  // for (let i = 0; i < images.length; i++){
+function voteResults() {
 
-  //   clicksArray.push(images[i].clicks);
-  //   viewsArray.push(images[i].views);
-  // }
 
-////create chart////
 
-let chartEl = document.getElementById('my-chart');
-let ctx = chartEl.getContext('2d');
+  for (let i = 0; i < images.length; i++) {
 
-let myChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: fileNames,
-    datasets: [{
-      label: '# of clicks',
-      data: clicksArray,
-      backgroundColor: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      borderColor: [
-        'Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      borderWidth: 1
+    clicksArray.push(images[i].clicks);
+    viewsArray.push(images[i].views);
+  }
+
+  ////create chart////
+
+  let chartEl = document.getElementById('my-chart');
+  let ctx = chartEl.getContext('2d');
+
+  let myChart = new Chart(ctx, {
+    type: 'bar',
+    options: {
+      layout: {
+        padding: 80
+      }
     },
-    
-    // {
-    //   label: '# of Views',
-    //   data: [2, 3, 4, 12, 4, 14],
-    //   backgroundColor: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    // }
-  ]},
+    data: {
+      labels: fileNames,
+      datasets: [{
+        label: '# of clicks',
+        data: clicksArray,
+        backgroundColor: 'green',
+      },
 
-});
+      {
+        label: '# of Views',
+        data: viewsArray,
+        backgroundColor: 'blue',
+      }
+      ]
+    },
+
+  });
 }
-
-voteResults();
