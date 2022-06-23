@@ -1,11 +1,19 @@
 #image-selection {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+  
 }
 
 img {
     max-width: 200px;
     max-height: 200px;
+    justify-self: center;
+}
+
+button  {
+    background-color: black;
+    color: white;
 }
 
 body {
