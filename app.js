@@ -29,6 +29,8 @@ let fileNames = [
 
 let images = read() || [];
 
+/// Image constructor and click handling function to randomize new images///
+
 function Image(fileName) {
   this.id = fileName;
   this.clicks = 0;
@@ -140,19 +142,7 @@ function read() {
   return JSON.parse(ValueFromLocalStorage);
 }
 
-
-
-Image.prototype.renderResults = function () {
-  const parentElement = document.getElementById('results-table');
-  const article = document.createElement('article');
-  parentElement.appendChild(article);
-
-  const h2 = document.createElement('h2');
-  h2.textContent = this.id + " had " + this.clicks + " clicks and was viewed " + this.views + " times";
-  article.appendChild(h2);
-};
-
-//// add buttons ////
+//// add hidden buttons ////
 
 let buttonEl = document.getElementById('results-button');
 
