@@ -69,6 +69,8 @@ function handleClick(event) {
     button1AddElement.hidden = false;
     let button2AddElement = document.getElementById('nuke-button');
     button2AddElement.hidden = false;
+    let button3AddElement = document.getElementById('vote-again');
+    button3AddElement.hidden = false;
     return;
   }
   renderImages();
@@ -150,7 +152,7 @@ Image.prototype.renderResults = function () {
   article.appendChild(h2);
 };
 
-
+//// add buttons ////
 
 let buttonEl = document.getElementById('results-button');
 
@@ -162,8 +164,17 @@ let buttonEl2 = document.getElementById('nuke-button');
 
 buttonEl2.addEventListener('click',function() {
   localStorage.clear();
+  location.reload();
+  return false;
 });
 
+
+let buttonEl3 = document.getElementById('vote-again');
+
+buttonEl3.addEventListener('click',function() {
+  location.reload();
+  return false;
+});
 
 //// generate chart data arrays///
 
